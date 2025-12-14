@@ -5,7 +5,7 @@ A lightweight TypeScript SDK for integrating payment processing and user managem
 ## Installation
 
 ```sh
-npm install yuno-demo-sdk
+npm install yuno-demo-sdk-core
 ```
 
 ## Quick Start
@@ -13,7 +13,7 @@ npm install yuno-demo-sdk
 ### Initialize a Payment
 
 ```typescript
-import { startPayment, type StartPaymentRequest } from 'yuno-demo-sdk';
+import { startPayment, type StartPaymentRequest } from 'yuno-demo-sdk-core';
 
 const request: StartPaymentRequest = {
   amount: 9999,
@@ -167,8 +167,8 @@ const response = await saveStyle(JSON.stringify({
 
 ```typescript
 import { useState } from 'react';
-import { startPayment } from 'yuno-demo-sdk';
-import type { StartPaymentRequest } from 'yuno-demo-sdk';
+import { startPayment } from 'yuno-demo-sdk-core';
+import type { StartPaymentRequest } from 'yuno-demo-sdk-core';
 
 export function PaymentButton() {
   const [loading, setLoading] = useState(false);
@@ -211,8 +211,8 @@ export function PaymentButton() {
 ### Complete Payment Flow
 
 ```typescript
-import { startPayment, continuePayment, checkStatus } from 'yuno-demo-sdk';
-import type { StartPaymentRequest, ContinuePaymentRequest } from 'yuno-demo-sdk';
+import { startPayment, continuePayment, checkStatus } from 'yuno-demo-sdk-core';
+import type { StartPaymentRequest, ContinuePaymentRequest } from 'yuno-demo-sdk-core';
 
 export async function completePayment() {
   try {
@@ -251,7 +251,7 @@ export async function completePayment() {
 ### Custom Request Options
 
 ```typescript
-import { startPayment } from 'yuno-demo-sdk';
+import { startPayment } from 'yuno-demo-sdk-core';
 
 const response = await startPayment(
   {
@@ -271,7 +271,7 @@ const response = await startPayment(
 All API calls return a response object with status and headers. Handle errors gracefully:
 
 ```typescript
-import { startPayment } from 'yuno-demo-sdk';
+import { startPayment } from 'yuno-demo-sdk-core';
 
 async function safePayment() {
   try {
