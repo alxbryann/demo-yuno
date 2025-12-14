@@ -3,7 +3,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Code, Eye } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { VscJson as VscJsonIcon } from "react-icons/vsc";
 import { toast } from "sonner";
@@ -13,8 +13,14 @@ import {
   generateZodSchema,
 } from "@/components/screens/generate-code-parts";
 import { renderFormField } from "@/components/screens/render-form-field";
-import { ColorPickerFormDemo } from "@/components/theme-picker";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import If from "@/components/ui/if";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -27,6 +33,7 @@ export type FormPreviewProps = {
   formFields: FormFieldOrGroup[];
   selectedLibrary: FormLibrary;
   onLibraryChange: (library: FormLibrary) => void;
+  themeVars?: Record<string, string>;
 };
 
 const renderFormFields = (fields: FormFieldOrGroup[], form: any) => {
@@ -88,8 +95,8 @@ const renderFormFields = (fields: FormFieldOrGroup[], form: any) => {
   });
 };
 
-export const FormPreview: React.FC<FormPreviewProps> = ({ formFields }) => {
-  const [themeVars, setThemeVars] = useState<Record<string, string>>({});
+export const FormPreview: React.FC<FormPreviewProps> = ({ formFields, themeVars = {} }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const formSchema = generateZodSchema(formFields);
   const defaultVals = generateDefaultValues(formFields);
@@ -98,6 +105,18 @@ export const FormPreview: React.FC<FormPreviewProps> = ({ formFields }) => {
     resolver: zodResolver(formSchema),
     defaultValues: defaultVals,
   });
+
+  // Apply theme variables to the preview container
+  useEffect(() => {
+    if (Object.keys(themeVars).length > 0) {
+      const container = document.getElementById('form-preview-container');
+      if (container) {
+        Object.entries(themeVars).forEach(([key, value]) => {
+          container.style.setProperty(key, value);
+        });
+      }
+    }
+  }, [themeVars]);
 
   function onSubmit(data: any) {
     try {
@@ -116,12 +135,9 @@ export const FormPreview: React.FC<FormPreviewProps> = ({ formFields }) => {
 
   return (
     <div className="w-full space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <h2 className="text-xl font-bold">Preview</h2>
-          <p className="text-sm text-muted-foreground">Live preview</p>
-        </div>
-        <ColorPickerFormDemo onSave={setThemeVars} />
+      <div className="space-y-1">
+        <h2 className="text-xl font-bold">Preview</h2>
+        <p className="text-sm text-muted-foreground">Live preview</p>
       </div>
 
       <Tabs defaultValue="preview" className="w-full">
@@ -140,18 +156,26 @@ export const FormPreview: React.FC<FormPreviewProps> = ({ formFields }) => {
           <If
             condition={formFields.length > 0}
             render={() => (
-              <div style={themeVars as React.CSSProperties}>
-                <Form {...form}>
-                  <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-5"
-                  >
-                    {renderFormFields(formFields, form)}
-                    <Button type="submit" className="w-full">
-                      Submit
-                    </Button>
-                  </form>
-                </Form>
+              <div id="form-preview-container" style={themeVars as React.CSSProperties}>
+                <Card className="max-w-md mx-auto">
+                  <CardHeader>
+                    <CardTitle>Preview Form</CardTitle>
+                    <CardDescription>Test your form here</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Form {...form}>
+                      <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="space-y-5"
+                      >
+                        {renderFormFields(formFields, form)}
+                        <Button type="submit" className="w-full">
+                          Submit
+                        </Button>
+                      </form>
+                    </Form>
+                  </CardContent>
+                </Card>
               </div>
             )}
             otherwise={() => (
@@ -165,13 +189,19 @@ export const FormPreview: React.FC<FormPreviewProps> = ({ formFields }) => {
         <TabsContent value="json" className="mt-4">
           <If
             condition={formFields.length > 0}
-            render={() => (
-              <div className="bg-secondary rounded-lg p-4 max-h-[400px] overflow-auto">
-                <pre className="text-xs font-mono text-foreground">
-                  {JSON.stringify(formFields, null, 2)}
-                </pre>
-              </div>
-            )}
+            render={() => {
+              const fullConfig = {
+                formFields,
+                themeVars: themeVars || {},
+              };
+              return (
+                <div className="bg-secondary rounded-lg p-4 max-h-[400px] overflow-auto">
+                  <pre className="text-xs font-mono text-foreground">
+                    {JSON.stringify(fullConfig, null, 2)}
+                  </pre>
+                </div>
+              );
+            }}
             otherwise={() => (
               <div className="flex justify-center items-center py-12 text-muted-foreground">
                 <p>No fields yet</p>
