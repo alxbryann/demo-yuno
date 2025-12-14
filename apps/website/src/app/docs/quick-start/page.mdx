@@ -1,0 +1,96 @@
+# Inicio Rápido
+
+Aprende a usar Yuno Demo en pocos minutos.
+
+## Constructor de formularios
+
+El constructor de formularios te permite crear formularios interactivos de manera visual.
+
+### Acceder al constructor
+
+1. Navega a `/playground` en tu aplicación
+2. Verás una interfaz dividida en dos paneles:
+   - **Panel izquierdo**: Constructor visual de formularios
+   - **Panel derecho**: Vista previa en tiempo real
+
+### Agregar campos
+
+```tsx
+import { FormBuilder } from "@/components/screens/form-builder";
+
+export default function MyPage() {
+  return <FormBuilder />;
+}
+```
+
+## Usar componentes UI
+
+Todos los componentes están disponibles en `@/components/ui`:
+
+```tsx
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+export default function Example() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Mi Formulario</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Input placeholder="Ingresa tu email" />
+        <Button className="mt-4">Enviar</Button>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+## Temas
+
+Cambia entre temas usando el selector de temas:
+
+```tsx
+import { ThemePicker } from "@/components/theme-picker";
+
+export default function Layout() {
+  return (
+    <div>
+      <ThemePicker />
+      {/* Tu contenido */}
+    </div>
+  );
+}
+```
+
+## Validación de formularios
+
+Utiliza los esquemas de validación incluidos:
+
+```tsx
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const formSchema = z.object({
+  email: z.string().email("Email inválido"),
+  password: z.string().min(8, "Mínimo 8 caracteres"),
+});
+
+export default function LoginForm() {
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+  });
+
+  return (
+    <form onSubmit={form.handleSubmit((data) => console.log(data))}>
+      {/* campos del formulario */}
+    </form>
+  );
+}
+```
+
+## Siguiente paso
+
+Explora la [Documentación de Componentes](/docs/components) para ver todos los componentes disponibles.
