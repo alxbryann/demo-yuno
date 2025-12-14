@@ -83,24 +83,9 @@ export function NavigationMenuDemo() {
       </NavigationMenu>
 
       <div className="flex items-center gap-2">
-<<<<<<< HEAD
-        <Button variant="outline" asChild>
-          <Link href="/playground">Checkout builder</Link>
-        </Button>
-        <Button variant="outline" asChild>
-          <Link href="/generate">Ai Builder</Link>
-        </Button>
-        <Button variant="default" asChild>
-          <Link href="/create">Full AI Builder</Link>
-        </Button>
-        <Button variant="secondary" asChild>
-          <Link href="/test">Checkout</Link>
-        </Button>
-=======
         <Button variant="outline" onClick={() => router.push('/playground')}>Checkout builder</Button>
         <Button variant="outline" onClick={() => router.push('/create')}>Ai Builder</Button>
         <Button variant="default">Full AI Builder</Button>
->>>>>>> fd51f86d1e7439e1229833663e3fff286de772bf
         <ModeToggle />
       </div>
     </div>

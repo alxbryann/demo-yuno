@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -167,15 +166,11 @@ export function ColorPickerFormDemo({ onSave }: ColorPickerFormDemoProps) {
   );
 
   return (
-    <div className="flex items-center gap-2">
-      <Button variant="secondary" asChild>
-        <Link href="/test">Checkout</Link>
-      </Button>
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="outline">Customize Theme</Button>
-        </SheetTrigger>
-        <SheetContent className="w-96 overflow-y-auto px-6 py-6">
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline">Customize Theme</Button>
+      </SheetTrigger>
+      <SheetContent className="w-96 overflow-y-auto px-6 py-6">
         <SheetHeader className="mb-6">
           <SheetTitle>Theme Settings</SheetTitle>
           <SheetDescription>Customize colors and styles</SheetDescription>
@@ -230,6 +225,5 @@ export function ColorPickerFormDemo({ onSave }: ColorPickerFormDemoProps) {
         </Form>
       </SheetContent>
     </Sheet>
-    </div>
   );
 }
