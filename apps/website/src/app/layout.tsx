@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { NavigationMenuDemo } from "@/components/navbar";
@@ -37,6 +38,7 @@ export default function RootLayout({
         >
           <NavigationMenuDemo />
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

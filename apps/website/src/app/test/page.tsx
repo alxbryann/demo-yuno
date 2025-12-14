@@ -4,9 +4,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { RenderFormField } from "@/components/screens/render-form-field";
-import { ColorPickerFormDemo } from "@/components/theme-picker";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,24 +18,26 @@ import {
 import { Form } from "@/components/ui/form";
 import type { FormFieldType } from "@/types";
 
-const STORAGE_KEY = "local-theme-config";
-
 export default function Page() {
   const [themeVars, setThemeVars] = useState<Record<string, string>>({});
   const [apiResponse, setApiResponse] = useState<string>("");
   const [formFields, setFormFields] = useState<FormFieldType[]>([]);
 
-  const saveTheme = (newVars: Record<string, string>) => {
-    setThemeVars(newVars);
-  };
-
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      setThemeVars(JSON.parse(saved));
-    }
     handleApiRequest(); // Fetch form fields on mount
   }, []);
+
+  // Apply theme variables to the card container
+  useEffect(() => {
+    if (Object.keys(themeVars).length > 0) {
+      const container = document.getElementById('themed-card-container');
+      if (container) {
+        Object.entries(themeVars).forEach(([key, value]) => {
+          container.style.setProperty(key, value);
+        });
+      }
+    }
+  }, [themeVars]);
 
   const handleApiRequest = async () => {
     try {
@@ -44,10 +46,17 @@ export default function Page() {
       );
       const data = await response.json();
       setApiResponse(JSON.stringify(data, null, 2));
-      if (Array.isArray(data)) {
+      
+      // Handle new structure with formFields and themeVars
+      if (data.formFields && data.themeVars) {
+        setFormFields(data.formFields);
+        setThemeVars(data.themeVars);
+        toast.success("Estilos cargados correctamente");
+      } else if (Array.isArray(data)) {
+        // Backward compatibility: old format was just an array
         setFormFields(data);
       } else {
-        console.error("API response is not an array");
+        console.error("API response format not recognized");
       }
     } catch (error) {
       setApiResponse(`Error: ${error}`);
@@ -64,11 +73,7 @@ export default function Page() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen gap-8 p-4">
-      <ColorPickerFormDemo onSave={saveTheme} />
-      <div
-        style={themeVars as React.CSSProperties}
-        className="w-full flex justify-center"
-      >
+      <div id="themed-card-container" className="w-full flex justify-center">
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle>Checkout</CardTitle>

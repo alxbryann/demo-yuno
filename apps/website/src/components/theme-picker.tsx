@@ -38,8 +38,9 @@ import {
 const formSchema = z.object({
   primaryColor: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be hex"),
   primaryForeground: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be hex"),
+  cardColor: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be hex"),
+  cardForeground: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be hex"),
   borderColor: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be hex"),
-  backgroundColor: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be hex"),
   inputColor: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be hex"),
   mutedColor: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be hex"),
   accentColor: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be hex"),
@@ -72,16 +73,18 @@ export function ColorPickerFormDemo({ onSave }: ColorPickerFormDemoProps) {
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: saved || {
+    defaultValues: {
       primaryColor: "#000000",
-      primaryForeground: "#000000",
+      primaryForeground: "#ffffff",
+      cardColor: "#ffffff",
+      cardForeground: "#000000",
       borderColor: "#e5e5e5",
-      backgroundColor: "#ffffff",
       inputColor: "#e5e5e5",
       mutedColor: "#f5f5f5",
       accentColor: "#f5f5f5",
       radiusSize: "0.625rem",
       ringColor: "#000000",
+      ...(saved || {}),
     },
   });
 
@@ -90,8 +93,9 @@ export function ColorPickerFormDemo({ onSave }: ColorPickerFormDemoProps) {
       const mappedVars = {
         "--primary": input.primaryColor,
         "--primary-foreground": input.primaryForeground,
+        "--card": input.cardColor,
+        "--card-foreground": input.cardForeground,
         "--border": input.borderColor,
-        "--background": input.backgroundColor,
         "--input": input.inputColor,
         "--muted": input.mutedColor,
         "--accent": input.accentColor,
@@ -176,8 +180,9 @@ export function ColorPickerFormDemo({ onSave }: ColorPickerFormDemoProps) {
             <div className="grid grid-cols-2 gap-4">
               <ColorField name="primaryColor" label="Primary" />
               <ColorField name="primaryForeground" label="Primary Text" />
+              <ColorField name="cardColor" label="Card Background" />
+              <ColorField name="cardForeground" label="Card Text" />
               <ColorField name="borderColor" label="Border" />
-              <ColorField name="backgroundColor" label="Background" />
               <ColorField name="inputColor" label="Input" />
               <ColorField name="mutedColor" label="Muted" />
               <ColorField name="accentColor" label="Accent" />

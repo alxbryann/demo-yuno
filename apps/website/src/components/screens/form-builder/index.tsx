@@ -7,6 +7,7 @@ import { EditFieldDialog } from "@/components/screens/edit-field-dialog";
 import { FieldSelector } from "@/components/screens/field-selector";
 import { FormFieldList } from "@/components/screens/form-field-list";
 import { FormPreview } from "@/components/screens/form-preview";
+import { ColorPickerFormDemo } from "@/components/theme-picker";
 import { Button } from "@/components/ui/button";
 import If from "@/components/ui/if";
 import {
@@ -28,6 +29,7 @@ export default function FormBuilder() {
   );
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [themeVars, setThemeVars] = useState<Record<string, string>>({});
   const [selectedLibrary, setSelectedLibrary] = useState<FormLibrary>(() => {
     if (typeof window !== "undefined") {
       return (
@@ -130,8 +132,12 @@ export default function FormBuilder() {
 
     setIsSaving(true);
     try {
-      const jsonString = JSON.stringify(formFields);
-      console.log("Saving form fields:", jsonString);
+      const payload = {
+        formFields,
+        themeVars,
+      };
+      const jsonString = JSON.stringify(payload);
+      console.log("Saving form configuration:", jsonString);
 
       const response = await fetch(
         "http://52.15.192.69:8080/api/payments/style",
@@ -163,12 +169,20 @@ export default function FormBuilder() {
     }
   };
 
+  const saveTheme = (newVars: Record<string, string>) => {
+    setThemeVars(newVars);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <If
         condition={formFields.length > 0}
         render={() => (
           <div className="h-screen flex flex-col p-4 gap-4">
+            {/* Theme Picker */}
+            <div className="flex justify-end">
+              <ColorPickerFormDemo onSave={saveTheme} />
+            </div>
             {/* Main Content: 3 Columns */}
             <div className="flex-1 overflow-hidden flex gap-4">
               {/* Column 1: Field Selector (Small) */}
@@ -202,6 +216,7 @@ export default function FormBuilder() {
                     formFields={formFields}
                     selectedLibrary={selectedLibrary}
                     onLibraryChange={() => {}}
+                    themeVars={themeVars}
                   />
                 </div>
                 <Button
