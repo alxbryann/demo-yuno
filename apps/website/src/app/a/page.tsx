@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Yuno } from "yuno-demo-sdk";
+// import { Yuno } from "yuno-demo-sdk";
 import { z } from "zod";
 import { RenderFormField } from "@/components/screens/render-form-field";
 import { ColorPickerFormDemo } from "@/components/theme-picker";
@@ -48,7 +48,7 @@ export default function CheckoutPage() {
     );
 
     // Initialize Yuno SDK
-    Yuno.render("yuno-checkout", "demo-public-key");
+    // Yuno.render("yuno-checkout", "demo-public-key");
 
     return () => {
       window.removeEventListener(
