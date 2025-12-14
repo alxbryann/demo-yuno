@@ -1,4 +1,4 @@
-import YunoIframe from "yuno-demo-sdk-ui";
+import YunoIframe from "@/iframe";
 
 export default function Page() {
   return (
