@@ -1,4 +1,4 @@
-import { FieldType } from "@/types";
+import type { FieldType } from "@/types";
 
 export const FORM_LIBRARIES = {
   SERVER_ACTIONS: "server-actions",
@@ -22,8 +22,11 @@ export const fieldTypes: FieldType[] = [
   { name: "Phone", isNew: false },
   { name: "Select", isNew: false },
   { name: "Multi Select", isNew: false },
-  { name: "Payment Method", isNew: false },
+  { name: "Payment Method Selector", isNew: false },
   { name: "Credit Card", isNew: false },
+  { name: "PayPal", isNew: false },
+  { name: "Apple Pay", isNew: false },
+  { name: "Google Pay", isNew: false },
   { name: "Date Picker", isNew: false },
   { name: "Textarea", isNew: false },
   { name: "Checkbox", isNew: false },
@@ -63,14 +66,26 @@ export const defaultFieldConfig: Record<
     label: "Payment Options",
     description: "Select additional payment options.",
   },
-  "Payment Method": {
-    label: "Payment Method",
+  "Payment Method Selector": {
+    label: "Select Payment Method",
     description: "Choose your preferred payment method.",
     placeholder: "Select payment method",
   },
   "Credit Card": {
     label: "Card Details",
     description: "Enter your credit card information.",
+  },
+  PayPal: {
+    label: "PayPal Account",
+    description: "Sign in with your PayPal account.",
+  },
+  "Apple Pay": {
+    label: "Apple Pay",
+    description: "Complete payment with Apple Pay.",
+  },
+  "Google Pay": {
+    label: "Google Pay",
+    description: "Complete payment with Google Pay.",
   },
   "Date Picker": {
     label: "Transaction Date",

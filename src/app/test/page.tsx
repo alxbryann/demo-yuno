@@ -1,9 +1,10 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Form } from "@/components/ui/form";
+import { renderFormField } from "@/components/screens/render-form-field";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,24 +13,68 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { renderFormField } from "@/components/screens/render-form-field";
+import { Form } from "@/components/ui/form";
 import type { FormFieldType } from "@/types";
 
 export default function Page() {
+  useEffect(() => {
+    const root = document.documentElement;
+
+    // Ejemplo 1: Rojo
+    root.style.setProperty("--primary", "#ef4444");
+    root.style.setProperty("--primary-foreground", "#ffffff");
+    root.style.setProperty("--border", "#fca5a5");
+    root.style.setProperty("--background", "#fef2f2");
+    root.style.setProperty("--input", "#fca5a5");
+    root.style.setProperty("--ring", "#ffffff");
+
+    // Para cambiar, descomenta otro ejemplo:
+
+    // Ejemplo 2: Azul
+    // root.style.setProperty("--primary", "#3b82f6");
+    // root.style.setProperty("--primary-foreground", "#ffffff");
+    // root.style.setProperty("--border", "#bfdbfe");
+    // root.style.setProperty("--background", "#eff6ff");
+
+    // Ejemplo 3: Verde
+    // root.style.setProperty("--primary", "#10b981");
+    // root.style.setProperty("--primary-foreground", "#ffffff");
+    // root.style.setProperty("--border", "#a7f3d0");
+    // root.style.setProperty("--background", "#f0fdf4");
+
+    // Ejemplo 4: Púrpura
+    // root.style.setProperty("--primary", "#8b5cf6");
+    // root.style.setProperty("--primary-foreground", "#ffffff");
+    // root.style.setProperty("--border", "#ddd6fe");
+    // root.style.setProperty("--background", "#faf5ff");
+  }, []);
+
   const formFields: FormFieldType[] = [
     {
       checked: true,
       description: "Enter your full name.",
       disabled: false,
       label: "Full Name",
-      name: "name_5382594627",
+      name: "name_7039650367",
       placeholder: "John Doe",
       required: true,
       rowIndex: 0,
       type: "",
       value: "",
       variant: "Input",
-      className: "bg-blue-500",
+    },
+    {
+      checked: true,
+      description: "Enter your credit card information.",
+      disabled: false,
+      label: "Card Details",
+      name: "name_2917242264",
+      placeholder: "Placeholder",
+      required: true,
+      rowIndex: 0,
+      type: "",
+      value: "",
+      variant: "Credit Card",
     },
   ];
 
