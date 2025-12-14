@@ -73,6 +73,7 @@
         "tailwind-merge": "^3.4.0",
         "timescape": "^0.8.0",
         "vaul": "^1.1.2",
+        "yuno-demo-sdk": "workspace:*",
         "zod": "^4.1.13",
         "zod-to-json-schema": "^3.25.0",
       },
