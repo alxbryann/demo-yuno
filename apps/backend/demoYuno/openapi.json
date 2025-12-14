@@ -1,0 +1,302 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "OpenAPI definition",
+        "version": "v0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost",
+            "description": "Generated server url"
+        }
+    ],
+    "tags": [
+        {
+            "name": "User",
+            "description": "The User API"
+        },
+        {
+            "name": "Payment",
+            "description": "Payment Management API"
+        }
+    ],
+    "paths": {
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get all users",
+                "description": "Returns a list of all registered users",
+                "operationId": "getAllUsers",
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Create a new user",
+                "description": "Adds a new user to the list",
+                "operationId": "createUser",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/payments/start": {
+            "post": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "Start a payment",
+                "description": "Initiates a new payment process",
+                "operationId": "startPayment",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartPaymentRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StartPaymentResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/payments/continue": {
+            "post": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "Continue a payment",
+                "description": "Continues an existing payment with a method token",
+                "operationId": "continuePayment",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContinuePaymentRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaymentStatusResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/{name}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get a user by name",
+                "description": "Returns a single user",
+                "operationId": "getUser",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/payments/style": {
+            "get": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "Get payment style",
+                "description": "Retrieves the styling configuration for the payment interface",
+                "operationId": "getStyle",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StyleResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/payments/status/{paymentId}": {
+            "get": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "Check payment status",
+                "description": "Retrieves the current status of a payment",
+                "operationId": "checkStatus",
+                "parameters": [
+                    {
+                        "name": "paymentId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaymentStatusResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "StartPaymentRequest": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "currency": {
+                        "type": "string"
+                    },
+                    "customerId": {
+                        "type": "string"
+                    }
+                }
+            },
+            "StartPaymentResponse": {
+                "type": "object",
+                "properties": {
+                    "paymentId": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "redirectUrl": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ContinuePaymentRequest": {
+                "type": "object",
+                "properties": {
+                    "paymentId": {
+                        "type": "string"
+                    },
+                    "paymentMethodToken": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PaymentStatusResponse": {
+                "type": "object",
+                "properties": {
+                    "paymentId": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "lastUpdated": {
+                        "type": "string"
+                    }
+                }
+            },
+            "StyleResponse": {
+                "type": "object",
+                "properties": {
+                    "theme": {
+                        "type": "string"
+                    },
+                    "primaryColor": {
+                        "type": "string"
+                    },
+                    "customStyles": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
